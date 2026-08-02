@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    App theme, updated for Android 12.
+
+    Android 12 changes:
+     1. DayNight theme - The original Theme.AppCompat.Light.DarkActionBar is a
+        LIGHT-ONLY theme. On Android 12, users can enable dark mode system-wide
+        from Quick Settings. A DayNight theme automatically switches between
+        light and dark assets based on the system setting, using the
+        values-night/colors.xml variant.
+
+     2. Android 12 SPLASH SCREEN - Android 12 (API 31+) adds a system splash
+        screen that shows on every cold start. The theme can customize it with
+        android:windowSplashScreen* attributes. These are optional - the system
+        renders a default splash from the adaptive icon if they are absent.
+
+     3. android:statusBarColor - On Android 12 the status bar is largely
+        controlled by the system (Material You wallpaper-based palette).
+        Explicit status bar colors may be ignored on Android 12+.
+
+     4. Transparent activity theme - Added for the ScreenRecordActivity
+        (transparent consent dialog) and the camera preview overlay, if used.
+
+    Place at: app/src/main/res/values/styles.xml
+-->
+<resources>
+
+    <!-- Base application theme (DayNight variant for Android 12 dark mode) -->
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <!-- ============================================================
+             Android 12 splash screen (API 31+, optional)
+             ============================================================ -->
+        <item name="android:windowSplashScreenBackground">@color/colorPrimary</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+
+        <!--
+            Optional: branding image below the icon on the splash screen.
+            <item name="android:windowSplashScreenBrandingImage">@drawable/...</item>
+        -->
+    </style>
+
+    <!--
+        Transparent theme for ScreenRecordActivity (MediaProjection consent).
+        This keeps the activity invisible while the system consent dialog shows.
+    -->
+    <style name="Theme.Transparent" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+
+</resources>
