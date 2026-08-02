@@ -1,0 +1,14 @@
+java_version_check() {
+    JAVACMD=$1
+    if [ -x "$JAVACMD" ] ; then
+        JAVA_VERSION=$("$JAVACMD" -version 2>&1 | head -n 1 | sed 's/.*version "\(.*\)\..*/\1/')
+        if [ -z "$JAVA_VERSION" ] ; then
+            JAVA_VERSION=0
+        fi
+        if [ "$JAVA_VERSION" -lt 11 ] ; then
+            die "ERROR: Java 11 or higher is required for Android 12 builds.
+      Current Java version: $("$JAVACMD" -version 2>&1 | head -n 1)
+      Please install JDK 11 or later and set JAVA_HOME to point to it."
+        fi
+    fi
+}
