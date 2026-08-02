@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Dark-mode color variant (Android 12).
+
+    Android 12 users can enable dark mode system-wide. When the system is in
+    dark mode, Android picks the values-night/ resources automatically.
+    These darker colors keep the app readable and match the system look.
+
+    Place at: app/src/main/res/values-night/colors.xml
+-->
+<resources>
+    <!-- Dark variant of the primary palette -->
+    <color name="colorPrimary">#4DB6AC</color>
+    <color name="colorPrimaryDark">#00332C</color>
+    <color name="colorAccent">#F06292</color>
+
+    <!-- Surface / background colors (dark) -->
+    <color name="colorSurface">#121212</color>
+    <color name="colorOnSurface">#FFFFFF</color>
+    <color name="colorSurfaceDark">#000000</color>
+
+    <!-- On-primary / on-accent text colors (dark) -->
+    <color name="colorOnPrimary">#000000</color>
+    <color name="colorOnAccent">#000000</color>
+
+    <!-- Background (dark) -->
+    <color name="colorBackground">#121212</color>
+    <color name="colorOnBackground">#FFFFFF</color>
+</resources>
+
+
+
