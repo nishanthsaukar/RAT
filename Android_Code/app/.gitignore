@@ -1,0 +1,18 @@
+# ============================================================
+# App module .gitignore - Android 12 project
+#
+# This file ignores the module-level build output generated
+# by Gradle when compiling the app. The build directory
+# contains compiled classes, dex files, APKs, and R8/ProGuard
+# outputs that should NEVER be committed to version control.
+#
+# The PROJECT-LEVEL .gitignore (at /Android12CameraFix/.gitignore)
+# already has a /build pattern that covers this directory too,
+# but having a module-level .gitignore is a defensive best
+# practice for Android projects.
+# ============================================================
+
+# ============================================================
+# Gradle build output (compiled classes, dex, APK, AAB)
+# ============================================================
+/build
