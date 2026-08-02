@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Camera preview layout, altered for Android 12.
+
+    ANDROID 12 CHANGE:
+    The old version contained a zero-size hidden FrameLayout (surfaceLayout)
+    that was used by the OLD Camera1 approach: a 1x1 SurfaceView was injected
+    into it via WindowManager.LayoutParams.TYPE_TOAST so the camera could
+    render off-screen while the RAT captured frames.
+
+    On Android 12 (API 31) that technique is BROKEN:
+      - Overlay window types (TYPE_TOAST / TYPE_PHONE / ...) are restricted.
+      - A hidden overlay surface is no longer a valid way to access the camera.
+      - Opening the camera from the background requires a FOREGROUND SERVICE
+        with foregroundServiceType="camera" (see CameraService.java).
+
+    The rewritten Camera2-based payloads (CameraPreview.java, videoRecorder.java)
+    use ImageReader / MediaRecorder.getSurface() and do NOT need any UI surface,
+    so this layout is now a plain (empty) container. The id "surfaceLayout" is
+    kept so any legacy findViewById(...) does not crash, but it is not used for
+    camera rendering anymore.
+
+    Place at: app/src/main/res/layout/camera_preview.xml
+    (keep your original filename - the id and structure above are unchanged)
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/surfaceLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000000"
+        android:visibility="gone" />
+
+</LinearLayout>
+
