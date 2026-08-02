@@ -1,0 +1,94 @@
+# ============================================================
+# Android 12 project .gitignore
+#
+# This file lives at the PROJECT ROOT (/Android12CameraFix/).
+# Patterns with a leading slash (e.g., /build) are relative
+# to this file's location.
+#
+# Java source files are at the root level (not inside app/),
+# so app/ only contains test files. No app/module-level build.
+# ============================================================
+# ============================================================
+# Gradle build outputs (project-level)
+# ============================================================
+/build
+.gradle/
+local.properties
+*.iml
+# ============================================================
+# Android build artifacts
+# ============================================================
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class
+bin/
+gen/
+out/
+# ============================================================
+# Android Studio / IntelliJ IDEA
+# ============================================================
+.idea/
+*.ipr
+*.iws
+*.swp
+*.swo
+*~
+# ============================================================
+# OS-specific files
+# ============================================================
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+# ============================================================
+# NDK / CMake / native builds
+# ============================================================
+.cxx/
+.externalNativeBuild/
+.caches/
+.captures/
+*.so
+*.o
+*.a
+# ============================================================
+# Java / Kotlin compiled artifacts
+# ============================================================
+*.class
+*.jar
+*.war
+*.nar
+*.ear
+# ============================================================
+# Gradle wrapper (keep the jar, ignore the rest)
+# ============================================================
+!gradle/wrapper/gradle-wrapper.jar
+# ============================================================
+# Proguard / R8 outputs
+# ============================================================
+/mapping/
+/proguard/
+*.pro
+!proguard-rules.pro
+# ============================================================
+# Signing / Keystore (NEVER commit these)
+# ============================================================
+*.jks
+*.keystore
+*.p12
+*.pfx
+key.properties
+# ============================================================
+# Environment / secrets
+# ============================================================
+.env
+.env.local
+google-services.json
+GoogleService-Info.plist
+# ============================================================
+# Android 12 build extras
+# ============================================================
+/merged_manifests/
+/renderscript/
