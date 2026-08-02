@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Control panel layout, updated for Android 12.
+
+    Android 12 changes:
+     1. android:fitsSystemWindows="true" on the root - Android 12 gesture
+        navigation renders edge-to-edge on some devices/launchers; this keeps
+        the buttons from being pushed under the status bar / system bars.
+
+     2. android:minHeight="48dp" on both buttons - Android 12 Material Design
+        guidance recommends a 48dp minimum touch target for accessibility
+        (the buttons previously used wrap_content, which could be smaller).
+
+    NOTE: the important Android 12 changes for this screen are in
+    controlPanel.java (uses ContextCompat.startForegroundService() so the C2
+    service can be started from the background) and AndroidManifest.xml
+    (android:exported flags) - those are already updated. This layout is
+    otherwise fully compatible with Android 12.
+-->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".controlPanel">
+
+    <Button
+        android:id="@+id/uninstall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="112dp"
+        android:minHeight="48dp"
+        android:minWidth="88dp"
+        android:text="Uninstall"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintStart_toEndOf="@+id/restart"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/restart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="112dp"
+        android:minHeight="48dp"
+        android:minWidth="88dp"
+        android:text="Restart Activity"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.185"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+
